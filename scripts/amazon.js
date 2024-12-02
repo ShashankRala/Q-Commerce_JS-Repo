@@ -45,6 +45,7 @@
 //   priceCents:2067
 // }];
 import {cart} from '../data/cart.js';
+import {products} from '../data/products.js';
 let productsHTML = '';
 
 products.forEach((product) => {
