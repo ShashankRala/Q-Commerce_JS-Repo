@@ -31,7 +31,7 @@ export function addToCart(productId) {
 
   }
 
-  export function removeFromCart(productId)
+  export function removeFromCart(productId  )
   {
      const newCart=[];
 
