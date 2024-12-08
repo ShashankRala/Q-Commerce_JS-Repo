@@ -1,0 +1,25 @@
+DayJS external library: 
+https://unpkg.com/dayjs@1.11.10/dayjs.min.js
+
+Calling dayjs() without parameters returns a fresh Day.js object with the current date and time.
+
+var now dayjs()
+
+This is essentially the same as calling dayjs (new Date()).
+
+Day.js treats dayjs (undefined) as dayjs() due to that function parameters default to undefined when not passed in.
+
+Day.js treats dayjs (null) as an invalid input.
+
+--------------------------------------------
+List of all available formats
+
+format      Output          Description
+YY          18              Two-digit year
+YYYY        2018            Four-digit year
+M           1-12            The Month,beginning at 1
+MM          01-12           The month, 2-digits
+dd          Su-Sa           The min name of the day of the week
+ddd         Sun-Sat         The short name of the day of the week
+dddd        Sunday-Saturday The name of the day of the week
+H           0-23             The hour

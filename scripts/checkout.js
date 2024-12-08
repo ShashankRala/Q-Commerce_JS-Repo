@@ -2,6 +2,21 @@ import { cart,removeFromCart } from "../data/cart.js";
 import { products } from "../data/products.js";
 import {formatCurrency} from "./utils/money.js";
 
+
+hello();
+
+const today = dayjs();
+const deliveryDate = today.add(7,'days'); 
+
+// time Q-commerce
+// const deliveryDate = today.add(7,'minutes'); 
+
+// console.log(deliveryDate);
+// time Q-commerce
+// console.log(deliveryDate.format('dddd, MMMM D, H:M'));
+console.log(deliveryDate.format('dddd, MMMM D'));
+
+
 let cartSummaryHTML = '';
 cart.forEach((cartItem)=>{
     const productId = cartItem.productId;
