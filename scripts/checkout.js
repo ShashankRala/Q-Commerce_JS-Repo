@@ -2,19 +2,24 @@ import { cart,removeFromCart } from "../data/cart.js";
 import { products } from "../data/products.js";
 import {formatCurrency} from "./utils/money.js";
 
+import { hello } from 'https://unpkg.com/supersimpledev@1.0.1/hello.esm.js'
+import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
+import {deliveryOptions} from '../data/deliveryOptions.js'
 
 hello();
 
 const today = dayjs();
-const deliveryDate = today.add(7,'days'); 
+// const deliveryDate = today.add(7,'days'); 
 
 // time Q-commerce
-// const deliveryDate = today.add(7,'minutes'); 
+const deliveryDate = today.add(0,'minutes'); 
 
 // console.log(deliveryDate);
 // time Q-commerce
-// console.log(deliveryDate.format('dddd, MMMM D, H:M'));
-console.log(deliveryDate.format('dddd, MMMM D'));
+// const todayDate=deliveryDate.format('dddd, MMMM D H: mm'); 
+
+console.log(deliveryDate.format('dddd, MMMM D, H:M'));
+// console.log(deliveryDate.format('dddd, MMMM D,H'));
 
 
 let cartSummaryHTML = '';
@@ -29,14 +34,51 @@ cart.forEach((cartItem)=>{
         }
     });
 
+const deliveryOptionId = cartItem.deliveryOptionId;
+
+
+let deliveryOption;
+
+deliveryOptions.forEach((option) => {
+  if(option.id === deliveryOptionId){
+    deliveryOption = option;
+  }
+});
+
+const today = dayjs();
+
+    const deliveryDate = today.add(
+      deliveryOption.deliveryTime,'minutes'
+    );
+
+    // const deliveryDate = today.add(
+    //   deliveryOption.deliveryTime,'days'
+    // );
+
+
+    // const dateString = deliveryDate.format(
+    //   'dddd, MMMM D '
+    // );
+
+    // Q
+    const dateString = deliveryDate.format(
+      'dddd, MMMM D ,H:mm'
+    );
+
+
+
     // console.log(matchingProduct);
+    // Delivery date: Tuesday, June 21
+              // Delivery Time: $todayDate
     cartSummaryHTML += 
     `
 
     <div class="cart-item-container
                 js-cart-item-container-${matchingProduct.id}">
             <div class="delivery-date">
-              Delivery date: Tuesday, June 21
+            Delivery Time: ${dateString}
+            
+              
             </div>
 
             <div class="cart-item-details-grid">
@@ -73,50 +115,103 @@ cart.forEach((cartItem)=>{
                 <div class="delivery-options-title">
                   Choose a delivery option:
                 </div>
-                <div class="delivery-option">
-                  <input type="radio" checked
-                    class="delivery-option-input"
-                    name="delivery-option-${matchingProduct.id}">
-                  <div>
-                    <div class="delivery-option-date">
-                      Tuesday, June 21
-                    </div>
-                    <div class="delivery-option-price">
-                      FREE Shipping
-                    </div>
-                  </div>
-                </div>
-                <div class="delivery-option">
-                  <input type="radio"
-                    class="delivery-option-input"
-                    name="delivery-option-${matchingProduct.id}">
-                  <div>
-                    <div class="delivery-option-date">
-                      Wednesday, June 15
-                    </div>
-                    <div class="delivery-option-price">
-                      $4.99 - Shipping
-                    </div>
-                  </div>
-                </div>
-                <div class="delivery-option">
-                  <input type="radio"
-                    class="delivery-option-input"
-                    name="delivery-option-${matchingProduct.id}">
-                  <div>
-                    <div class="delivery-option-date">
-                      Monday, June 13
-                    </div>
-                    <div class="delivery-option-price">
-                      $9.99 - Shipping
-                    </div>
-                  </div>
-                </div>
-              </div>
+
+                ${deliveryOptionsHTML(matchingProduct,cartItem)}
+             </div>
             </div>
           </div>
-    `
+    `;
 });
+                // <div class="delivery-option">
+                //   <input type="radio" checked
+                //     class="delivery-option-input"
+                //     name="delivery-option-$matchingProduct.id}">
+                //   <div>
+                //     <div class="delivery-option-date">
+                //       Tuesday, June 21
+                //     </div>
+                //     <div class="delivery-option-price">
+                //       FREE Shipping
+                //     </div>
+                //   </div>
+                // </div>
+                // <div class="delivery-option">
+                //   <input type="radio"
+                //     class="delivery-option-input"
+                //     name="delivery-option-$matchingProduct.id}">
+                //   <div>
+                //     <div class="delivery-option-date">
+                //       Wednesday, June 15
+                //     </div>
+                //     <div class="delivery-option-price">
+                //       $4.99 - Shipping
+                //     </div>
+                //   </div>
+                // </div>
+                // <div class="delivery-option">
+                //   <input type="radio"
+                //     class="delivery-option-input"
+                //     name="delivery-option-$matchingProduct.id}">
+                //   <div>
+                //     <div class="delivery-option-date">
+                //       Monday, June 13
+                //     </div>
+                //     <div class="delivery-option-price">
+                //       $9.99 - Shipping
+                //     </div>
+                //   </div>
+                // </div>
+ 
+
+function deliveryOptionsHTML(matchingProduct,cartItem){
+
+  let html ='';
+   deliveryOptions.forEach((deliveryOption) => {
+    const today = dayjs();
+
+    const deliveryDate = today.add(
+      deliveryOption.deliveryTime,'minutes');
+
+    // const deliveryDate = today.add(
+    //   deliveryOption.deliveryTime,'days'
+    // );
+
+
+    // const dateString = deliveryDate.format(
+    //   'dddd, MMMM D '
+    // );
+
+    // Q
+    const dateString = deliveryDate.format(
+      'dddd, MMMM D ,H:mm'
+    );
+
+    const priceString = deliveryOption.priceCents === 0
+    ? 'FREE'
+    : `$${formatCurrency(deliveryOption.priceCents)} - `;
+
+    const isChecked = deliveryOption.id === cartItem.deliveryOptionId;
+    html +=
+    `
+    <div class="delivery-option">
+       <input type="radio"
+       ${isChecked ? 'checked' : ''}
+         class="delivery-option-input"
+         name="delivery-option-${matchingProduct.id}">
+         <div>
+           <div class="delivery-option-date">
+             ${dateString}
+              </div>
+                <div class="delivery-option-price">
+                  ${priceString} Shipping
+               </div>
+             </div>
+          </div>
+    `
+   });
+   return html;
+}
+
 document.querySelector('.js-order-summary')
 .innerHTML=cartSummaryHTML;
  
