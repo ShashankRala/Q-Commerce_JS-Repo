@@ -21,7 +21,7 @@ const deliveryDate = today.add(0,'minutes');
 console.log(deliveryDate.format('dddd, MMMM D, H:M'));
 // console.log(deliveryDate.format('dddd, MMMM D,H'));
 
-
+function renderOrderSummary(){
 let cartSummaryHTML = '';
 cart.forEach((cartItem)=>{
     const productId = cartItem.productId;
@@ -239,5 +239,9 @@ document.querySelectorAll('.js-delivery-option')
                             element.addEventListener('click',()=>{
                               const {productId, deliveryOptionId} = element.dataset;
                               updateDeliveryOption(productId,deliveryOptionId);
+                          renderOrderSummary();
                             });
                           });
+}            
+
+renderOrderSummary();
