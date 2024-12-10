@@ -5,8 +5,8 @@ import {formatCurrency} from "../utils/money.js";
 import { hello } from 'https://unpkg.com/supersimpledev@1.0.1/hello.esm.js'
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import {deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js'
-
-hello();
+import { renderPaymentSummary } from "./paymentSummary.js";
+// hello();
 
 const today = dayjs();
 // const deliveryDate = today.add(7,'days'); 
@@ -18,7 +18,7 @@ const deliveryDate = today.add(0,'minutes');
 // time Q-commerce
 // const todayDate=deliveryDate.format('dddd, MMMM D H: mm'); 
 
-console.log(deliveryDate.format('dddd, MMMM D, H:M'));
+// console.log(deliveryDate.format('dddd, MMMM D, H:M'));
 // console.log(deliveryDate.format('dddd, MMMM D,H'));
 
 export function renderOrderSummary(){
@@ -232,6 +232,8 @@ document.querySelectorAll('.js-delete-link')
     );
     // console.log(container);
     container.remove();
+
+    renderPaymentSummary();
   });
 });
 
@@ -242,6 +244,7 @@ document.querySelectorAll('.js-delivery-option')
                               const {productId, deliveryOptionId} = element.dataset;
                               updateDeliveryOption(productId,deliveryOptionId);
                           renderOrderSummary();
+                          renderPaymentSummary();
                             });
                           });
 }            
